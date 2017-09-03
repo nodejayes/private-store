@@ -1,3 +1,7 @@
+coverage/**
+.sonarlint/**
+.vscode/**
+
 # Logs
 logs
 *.log
