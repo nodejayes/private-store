@@ -1,32 +1,15 @@
 const ASSERT = require('assert');
+let TestClass = require('./testclass');
+let PrivateStore = require('./../index');
 
 describe('PrivateStore Specs', function () {
-    const PrivateStore = require('./../index')();
-
-    class TestClass {
-        constructor () {
-            PrivateStore.set('name', null);
-        }
-
-        destruct () {
-            PrivateStore.destruct();
-        }
-
-        get Name () {
-            return PrivateStore.get('name');
-        }
-
-        setMyName (name) {
-            PrivateStore.set('name', name);
-        }
-    }
-
     it('create class definition', function () {        
         let t = new TestClass();
         t.setMyName('Peter');
         ASSERT.equal(t.Name, 'Peter', '');
         t.setMyName('Paul');
         ASSERT.equal(t.Name, 'Paul');
+        t.dispose();
     });
 
     it('test multiple instances', function () {
@@ -37,5 +20,7 @@ describe('PrivateStore Specs', function () {
         ASSERT.notEqual(t1.Name, t2.Name, '');
         ASSERT.equal(t1.Name, 'Peter', '');
         ASSERT.equal(t2.Name, 'Paul');
+        t1.dispose();
+        t2.dispose();
     });
 });

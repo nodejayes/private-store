@@ -1,16 +1,26 @@
-const PrivateStore = require('./privatestore');
+const UUID = require('uuid/v4');
 
-module.exports = function () {
-    let id = PrivateStore.register();
-    return {
-        get: function (key) {
-            return PrivateStore.read(id, key);
-        },
-        set: function (key, value) {
-            PrivateStore.write(id, key, value);
-        },
-        destruct: function () {
-            PrivateStore.clear(id);
+let _store = {};
+
+class PrivateStore {
+    static register () {
+        let id = UUID();
+        _store[id] = {};
+        return id;
+    }
+
+    static write (id, key, value) {
+        _store[id][key] = value;
+    }
+
+    static read (id, key) {
+        return _store[id][key];
+    }
+
+    static clear (id) {
+        if (_store.hasOwnProperty(id)) {
+            delete _store[id];
         }
-    };
-};
+    }
+}
+module.exports = PrivateStore;
